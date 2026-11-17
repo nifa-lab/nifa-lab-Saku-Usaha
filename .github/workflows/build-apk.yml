@@ -46,7 +46,7 @@ jobs:
             -dname "CN=Android Debug,O=Android,C=US"
 
       - name: Build debug APK
-        run: gradle assembleDebug --stacktrace
+        run: gradle assembleDebug --console=plain
 
       - name: Upload debug APK
         uses: actions/upload-artifact@v4
