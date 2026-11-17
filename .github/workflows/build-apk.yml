@@ -27,7 +27,7 @@ jobs:
         run: |
           "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" \
             "platforms;android-36.1" "build-tools;36.0.0"
-            
+
       # Proyek ini tidak menyertakan gradlew / gradle-wrapper.jar,
       # jadi Gradle dipasang langsung sesuai gradle-wrapper.properties (9.3.1).
       - name: Setup Gradle
@@ -46,7 +46,16 @@ jobs:
             -dname "CN=Android Debug,O=Android,C=US"
 
       - name: Build debug APK
-        run: gradle assembleDebug --console=plain
+        run: |
+          set -o pipefail
+          gradle assembleDebug --console=plain --no-configuration-cache 2>&1 | tee build.log
+
+      # Jika build gagal, tampilkan ringkasan penyebabnya di akhir log.
+      - name: Show error summary
+        if: failure()
+        run: |
+          echo "=============== RINGKASAN ERROR ==============="
+          grep -n -A25 "What went wrong" build.log || tail -n 60 build.log
 
       - name: Upload debug APK
         uses: actions/upload-artifact@v4
@@ -74,7 +83,7 @@ jobs:
         run: |
           echo "$KEYSTORE_BASE64" | base64 -d > "$RUNNER_TEMP/release.jks"
           export KEYSTORE_PATH="$RUNNER_TEMP/release.jks"
-          gradle assembleRelease --stacktrace
+          gradle assembleRelease --console=plain
 
       - name: Upload release APK
         if: steps.release_check.outputs.enabled == 'true'
