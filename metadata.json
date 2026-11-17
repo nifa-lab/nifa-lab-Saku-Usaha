@@ -1,0 +1,6 @@
+{
+  "name": "SakuUsaha",
+  "description": "Aplikasi pencatatan keuangan UMKM praktis dan lengkap untuk memantau laba rugi, kas, transaksi, stok produk, serta utang dan piutang.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
