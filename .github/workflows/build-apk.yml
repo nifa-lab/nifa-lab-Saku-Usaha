@@ -23,6 +23,11 @@ jobs:
       - name: Accept Android SDK licenses
         run: yes | "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" --licenses || true
 
+      - name: Install Android platform
+        run: |
+          "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" \
+            "platforms;android-36.1" "build-tools;36.0.0"
+            
       # Proyek ini tidak menyertakan gradlew / gradle-wrapper.jar,
       # jadi Gradle dipasang langsung sesuai gradle-wrapper.properties (9.3.1).
       - name: Setup Gradle
